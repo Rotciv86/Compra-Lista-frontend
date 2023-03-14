@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UiState } from "../../../types/types";
+import { a } from "msw/lib/SetupApi-f4099ef3";
+import { OpenFeedbackActionPayload, UiState } from "../../../types/types";
 
 const uiInitialState: UiState = {
   feedback: { isOpen: false, messageFeedback: "", isError: false },
@@ -10,17 +11,17 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: uiInitialState,
   reducers: {
-    openSuccessFeedback: (previousUi, action: PayloadAction<UiState>) => ({
+    openFeedback: (
+      previousUi,
+      action: PayloadAction<OpenFeedbackActionPayload>
+    ) => ({
       ...previousUi,
-      ...action.payload,
+      feedback: { ...action.payload, isOpen: true },
     }),
-    openErrorFeedback: (previousUi, action: PayloadAction<UiState>) => ({
-      ...previousUi,
-      ...action.payload,
-    }),
+
     closeFeedback: (previousUi) => ({
       ...previousUi,
-      feedback: { isOpen: false, messageFeedback: "", isError: false },
+      feedback: uiInitialState.feedback,
     }),
   },
 });
@@ -28,7 +29,6 @@ const uiSlice = createSlice({
 export const uiReducer = uiSlice.reducer;
 
 export const {
-  openSuccessFeedback: openSuccessFeedbackActionCreator,
-  openErrorFeedback: openErrorFeedbackActionCreator,
+  openFeedback: openFeedbackActionCreator,
   closeFeedback: closeFeedbackActionCreator,
 } = uiSlice.actions;
