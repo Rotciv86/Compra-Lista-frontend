@@ -29,7 +29,7 @@ const useUser = () => {
         openErrorFeedbackActionCreator({
           feedback: {
             isOpen: true,
-            messageFeedback: `It was not possible to register ${(
+            messageFeedback: `It was not possible to register: ${(
               error as AxiosError<AxiosResponseBody>
             ).response?.data.error!}`,
             isError: true,
@@ -37,13 +37,10 @@ const useUser = () => {
           isLoading: false,
         })
       );
-      throw new Error(
-        `It was not possible to register: ${(error as Error).message}`
-      );
     }
   };
 
-  return registerUser;
+  return { registerUser };
 };
 
 export default useUser;

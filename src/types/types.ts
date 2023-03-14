@@ -11,3 +11,9 @@ export interface UiState {
   };
   isLoading: boolean;
 }
+export interface OpenFeedbackActionPayload {
+  feedback: {
+    messageFeedback: string;
+    isError: boolean;
+  };
+}
