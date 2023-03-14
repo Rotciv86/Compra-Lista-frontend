@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { a } from "msw/lib/SetupApi-f4099ef3";
 import { OpenFeedbackActionPayload, UiState } from "../../../types/types";
 
 const uiInitialState: UiState = {
