@@ -1,7 +1,20 @@
+import { useState } from "react";
+import { UserRegisterData } from "../../types/types";
 import ButtonStyled from "../Button/ButtonStyled";
 import RegisterFormStyled from "./RegisterFormStyled";
 
+const initialFormData: UserRegisterData = {
+  username: "",
+  password: "",
+};
+
 const RegisterForm = (): JSX.Element => {
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [event.target.id]: event.target.value });
+  };
+
   return (
     <RegisterFormStyled>
       <form action="" className="register-form">
@@ -13,6 +26,9 @@ const RegisterForm = (): JSX.Element => {
               type="text"
               id="username"
               autoComplete="off"
+              onChange={handleFormChange}
+              value={formData.username}
+              required
             />
           </div>
 
@@ -23,7 +39,10 @@ const RegisterForm = (): JSX.Element => {
               type="password"
               id="password"
               autoComplete="off"
-              min="8"
+              minLength={4}
+              onChange={handleFormChange}
+              value={formData.password}
+              required
             />
           </div>
         </div>
