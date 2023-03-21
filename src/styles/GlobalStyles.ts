@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .container{
-    padding: 0 1rem;
+    padding: 1rem;
   }
 `;
 
