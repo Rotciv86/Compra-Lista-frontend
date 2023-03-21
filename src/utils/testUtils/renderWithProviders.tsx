@@ -8,6 +8,7 @@ import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { uiReducer } from "../../redux/features/uiSlice/uiSlice";
 import { Provider } from "react-redux";
 import { mainTheme } from "../../styles/mainTheme";
+import GlobalStyles from "../../styles/GlobalStyles";
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: PreloadedState<RootState>;
@@ -43,7 +44,10 @@ const renderWithProviders = (
     return (
       <Router>
         <Provider store={store}>
-          <ThemeProvider theme={mainTheme}>{children}</ThemeProvider>
+          <ThemeProvider theme={mainTheme}>
+            <GlobalStyles />
+            {children}
+          </ThemeProvider>
         </Provider>
       </Router>
     );
