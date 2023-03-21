@@ -17,6 +17,8 @@ const RegisterForm = (): JSX.Element => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
 
+  const isNotEmpty = formData.username !== "" && formData.password !== "";
+
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
@@ -62,6 +64,7 @@ const RegisterForm = (): JSX.Element => {
         text={"Regístrate"}
         className="register-button"
         action={function () {}}
+        isDisabled={!isNotEmpty}
       />
     </RegisterFormStyled>
   );
