@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../redux/hooks";
 import Feedback from "../Feedback/Feedback";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import Layout from "../Layout/Layout";
 
 const App = () => {
   const {
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>Be Cooked</h1>
+      <h1>Compra Lista</h1>
       {isOpen && (
         <Feedback
           messageFeedback={messageFeedback}
@@ -17,7 +17,7 @@ const App = () => {
           isError={isError}
         />
       )}
-      <RegisterForm />
+      <Layout />
     </div>
   );
 };
