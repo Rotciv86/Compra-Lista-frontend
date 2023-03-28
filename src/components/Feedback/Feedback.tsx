@@ -18,6 +18,7 @@ const Feedback = ({ isError, isOpen, messageFeedback }: FeedbackProps) => {
         dispatch(closeFeedbackActionCreator());
       }, 3000);
     }
+    return;
   }, [dispatch, isOpen]);
 
   return (
