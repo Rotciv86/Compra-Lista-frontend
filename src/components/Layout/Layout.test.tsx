@@ -16,4 +16,15 @@ describe("Given the Layout ui component", () => {
       expect(usernameInput).toBeInTheDocument();
     });
   });
+
+  describe("When it is rendered and receives the route '*'", () => {
+    test("Then it should show the NotFoundPage component", () => {
+      renderWithProviders(<Layout />, { initialEntries: ["/*"] });
+      const expectedText = "VOLVER AL INICIO";
+      const button = screen.queryByRole("button");
+
+      expect(button).toBeInTheDocument();
+      expect(button).toHaveTextContent(expectedText);
+    });
+  });
 });
