@@ -9,7 +9,6 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>Compra Lista</h1>
       {isOpen && (
         <Feedback
           messageFeedback={messageFeedback}
