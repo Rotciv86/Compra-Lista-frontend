@@ -9,6 +9,7 @@ import { uiReducer } from "../../redux/features/uiSlice/uiSlice";
 import { Provider } from "react-redux";
 import { mainTheme } from "../../styles/mainTheme";
 import GlobalStyles from "../../styles/GlobalStyles";
+import { userReducer } from "../../redux/features/userSlice/userSlice";
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: PreloadedState<RootState>;
@@ -37,7 +38,10 @@ const renderWithProviders = (
   {
     preloadedState,
     initialEntries,
-    store = configureStore({ reducer: { ui: uiReducer }, preloadedState }),
+    store = configureStore({
+      reducer: { ui: uiReducer, user: userReducer },
+      preloadedState,
+    }),
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) => {
