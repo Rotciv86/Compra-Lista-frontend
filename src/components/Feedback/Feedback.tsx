@@ -13,12 +13,10 @@ const Feedback = ({ isError, isOpen, messageFeedback }: FeedbackProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        dispatch(closeFeedbackActionCreator());
-      }, 3000);
-    }
-  }, [dispatch, isOpen]);
+    setTimeout(() => {
+      dispatch(closeFeedbackActionCreator());
+    }, 3000);
+  }, [dispatch]);
 
   return (
     <FeedbackStyled className={isError ? "feedback-error" : "feedback-success"}>
