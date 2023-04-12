@@ -15,6 +15,15 @@ const handlers = [
     }
     return res(ctx.status(201), ctx.json({ user }));
   }),
+
+  rest.post(`${apiUrl}/users/login`, async (req, res, ctx) => {
+    const { password } = await req.json<UserData>();
+
+    if (password === "3333") {
+      return res(ctx.status(401), ctx.json({ error: "Credenciales erroneas" }));
+    }
+    return res(ctx.status(200), ctx.json({ token: "tokenomics" }));
+  }),
 ];
 
 export default handlers;

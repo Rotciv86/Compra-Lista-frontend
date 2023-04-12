@@ -1,16 +1,30 @@
 import { renderHook } from "@testing-library/react";
 import ProviderWrapper from "../mocks/providerWrapper";
+import mockLoginUser from "../mocks/userMocks/mockLoginUser";
 import { openFeedbackActionCreator } from "../redux/features/uiSlice/uiSlice";
+import { loginUserActionCreator } from "../redux/features/userSlice/userSlice";
 import { store } from "../redux/store";
-import { OpenFeedbackActionPayload, UserData } from "../types/types";
+import {
+  JwtPayload,
+  OpenFeedbackActionPayload,
+  UserData,
+} from "../types/types";
 import useUser from "./useUser";
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 const dispatchSpy = jest.spyOn(store, "dispatch");
 
-describe("Given a useUser custom hook", () => {
+jest.mock("jwt-decode", () => {
+  return () => ({ id: "333", username: "Benja" } as JwtPayload);
+});
+
+describe("Given the useUser custom hook", () => {
   const {
     result: {
-      current: { registerUser },
+      current: { registerUser, loginUser },
     },
   } = renderHook(() => useUser(), {
     wrapper: ProviderWrapper,
@@ -51,6 +65,49 @@ describe("Given a useUser custom hook", () => {
 
       expect(dispatchSpy).toHaveBeenCalledWith(
         openFeedbackActionCreator(feedbackErrorPayload)
+      );
+    });
+  });
+
+  describe("When its method loginUser is invoked with a correct username 'Benja' and password '1234'", () => {
+    test("Then it should invoke dispatch with openFeedbackActionCreator with text 'Bienvenido de nuevo benja!'", async () => {
+      const user = mockLoginUser;
+      const loginActionPayload = {
+        username: "Benja",
+        id: "333",
+        token: "tokenomics",
+      };
+
+      const feedbackPayload: OpenFeedbackActionPayload = {
+        isError: false,
+        messageFeedback: `Bienvenido de nuevo ${user.username}!`,
+      };
+
+      await loginUser(user);
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        openFeedbackActionCreator(feedbackPayload)
+      );
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        loginUserActionCreator(loginActionPayload)
+      );
+    });
+  });
+
+  describe("When its method loginUser is invoked with correct username 'Geri' and incorrect password '3333'", () => {
+    test("Then it should invoke dispathc with openFeedbackActionCreator and text 'Credenciales erroneas'", async () => {
+      const user = { ...mockLoginUser, password: "3333" };
+
+      const feedbackPayload: OpenFeedbackActionPayload = {
+        isError: true,
+        messageFeedback: "Credenciales erroneas",
+      };
+
+      await loginUser(user);
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        openFeedbackActionCreator(feedbackPayload)
       );
     });
   });
