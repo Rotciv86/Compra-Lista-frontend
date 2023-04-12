@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react";
 import ProviderWrapper from "../mocks/providerWrapper";
 import { openFeedbackActionCreator } from "../redux/features/uiSlice/uiSlice";
 import { store } from "../redux/store";
-import { OpenFeedbackActionPayload, UserRegisterData } from "../types/types";
+import { OpenFeedbackActionPayload, UserData } from "../types/types";
 import useUser from "./useUser";
 
 const dispatchSpy = jest.spyOn(store, "dispatch");
@@ -18,7 +18,7 @@ describe("Given a useUser custom hook", () => {
 
   describe("When its method registerUser is invoked with username 'jesus', password '1234'", () => {
     test("Then it should invoke dispatch with openFeedbackActionCreator", async () => {
-      const newUser: UserRegisterData = {
+      const newUser: UserData = {
         username: "jesus",
         password: "1234",
       };
@@ -37,7 +37,7 @@ describe("Given a useUser custom hook", () => {
 
   describe("When its method registerUser is invoked with username 'Bertin Ousbourne'", () => {
     test("Then it should invoke dispatch with openModalAction creator with text 'It was not possible to register: This username is already registered'", async () => {
-      const newUser: UserRegisterData = {
+      const newUser: UserData = {
         username: "Bertin Ousbourne",
         password: "",
       };

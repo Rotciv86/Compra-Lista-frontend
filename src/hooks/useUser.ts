@@ -1,14 +1,20 @@
 import axios, { AxiosError } from "axios";
 import { openFeedbackActionCreator } from "../redux/features/uiSlice/uiSlice";
+import { loginUserActionCreator } from "../redux/features/userSlice/userSlice";
 import { useAppDispatch } from "../redux/hooks";
-import { OpenFeedbackActionPayload, UserRegisterData } from "../types/types";
+import {
+  JwtPayload,
+  OpenFeedbackActionPayload,
+  UserData,
+} from "../types/types";
+import decodeToken from "../utils/testUtils/decodeToken";
 import { AxiosResponseBody } from "./types";
 
 const useUser = () => {
   const apiUrl = process.env.REACT_APP_API_URL!;
   const dispatch = useAppDispatch();
 
-  const registerUser = async (userData: UserRegisterData) => {
+  const registerUser = async (userData: UserData) => {
     try {
       await axios.post(`${apiUrl}/users/sign-up`, userData);
 
@@ -29,7 +35,32 @@ const useUser = () => {
     }
   };
 
-  return { registerUser };
+  const loginUser = async (userLoginData: UserData) => {
+    try {
+      const response = await axios.post(`${apiUrl}/users/login`, userLoginData);
+
+      const { token } = await response.data;
+      const loggedUser: JwtPayload = decodeToken(token);
+
+      dispatch(loginUserActionCreator({ ...loggedUser, token }));
+      localStorage.setItem("token", token);
+      dispatch(
+        openFeedbackActionCreator({
+          isError: false,
+          messageFeedback: `Bienvenido de nuevo ${userLoginData.username}!`,
+        })
+      );
+    } catch (error: unknown) {
+      dispatch(
+        openFeedbackActionCreator({
+          isError: true,
+          messageFeedback: "Credenciales erroneas",
+        })
+      );
+    }
+  };
+
+  return { registerUser, loginUser };
 };
 
 export default useUser;

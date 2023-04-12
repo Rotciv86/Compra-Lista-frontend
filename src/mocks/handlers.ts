@@ -1,11 +1,11 @@
 import { rest } from "msw";
-import { UserRegisterData } from "../types/types";
+import { UserData } from "../types/types";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const handlers = [
   rest.post(`${apiUrl}/users/sign-up`, async (req, res, ctx) => {
-    const user = await req.json<UserRegisterData>();
+    const user = await req.json<UserData>();
     const { username } = user;
     if (username === "Bertin Ousbourne") {
       return res(
