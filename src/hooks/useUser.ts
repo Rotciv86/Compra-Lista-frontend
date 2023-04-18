@@ -1,5 +1,9 @@
 import axios, { AxiosError } from "axios";
-import { openFeedbackActionCreator } from "../redux/features/uiSlice/uiSlice";
+import {
+  closeLoadingActionCreator,
+  openFeedbackActionCreator,
+  openLoadingActionCreator,
+} from "../redux/features/uiSlice/uiSlice";
 import { loginUserActionCreator } from "../redux/features/userSlice/userSlice";
 import { useAppDispatch } from "../redux/hooks";
 import {
@@ -15,6 +19,7 @@ const useUser = () => {
   const dispatch = useAppDispatch();
 
   const registerUser = async (userData: UserData) => {
+    dispatch(openLoadingActionCreator());
     try {
       await axios.post(`${apiUrl}/users/sign-up`, userData);
 
@@ -22,7 +27,7 @@ const useUser = () => {
         messageFeedback: `User ${userData.username} registered successfully`,
         isError: false,
       };
-
+      dispatch(closeLoadingActionCreator());
       dispatch(openFeedbackActionCreator(feedbackSuccessPayload));
     } catch (error: unknown) {
       const feedbackErrorPayload: OpenFeedbackActionPayload = {
@@ -31,11 +36,14 @@ const useUser = () => {
         ).response?.data.error!}`,
         isError: true,
       };
+      dispatch(closeLoadingActionCreator());
+
       dispatch(openFeedbackActionCreator(feedbackErrorPayload));
     }
   };
 
   const loginUser = async (userLoginData: UserData) => {
+    dispatch(openLoadingActionCreator());
     try {
       const response = await axios.post(`${apiUrl}/users/login`, userLoginData);
 
@@ -44,6 +52,8 @@ const useUser = () => {
 
       dispatch(loginUserActionCreator({ ...loggedUser, token }));
       localStorage.setItem("token", token);
+      dispatch(closeLoadingActionCreator());
+
       dispatch(
         openFeedbackActionCreator({
           isError: false,
@@ -51,6 +61,8 @@ const useUser = () => {
         })
       );
     } catch (error: unknown) {
+      dispatch(closeLoadingActionCreator());
+
       dispatch(
         openFeedbackActionCreator({
           isError: true,
