@@ -11,6 +11,7 @@ const LoaderStyled = styled.span`
   justify-content: center;
   position: fixed;
   z-index: 1;
+
   .loader {
     position: relative;
     width: 120px;
